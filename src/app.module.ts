@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { MessagesController } from './messages/messages.controller';
-import { MessagesService } from './messages/messages.service';
-import { ConfigModule } from '@nestjs/config';
+import { MessageModule } from './messages/messages.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true })],
-  controllers: [MessagesController],
-  providers: [MessagesService],
+  imports: [MessageModule],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

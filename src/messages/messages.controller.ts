@@ -1,13 +1,15 @@
-import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
-import { MessagesService } from './messages.service';
+import { Controller, Post, Body } from '@nestjs/common';
+import { KafkaProducerService } from './messages.service';
 
 @Controller()
 export class MessagesController {
-  constructor(private readonly messagesService: MessagesService) {}
+  constructor(private readonly kafkaProducerService: KafkaProducerService) {}
 
-  @MessagePattern('messages.topic') // Cambia este valor al nombre del topic que desees
-  async handleMessage(@Payload() message: any): Promise<void> {
-    this.messagesService.handleMessage(message.value);
+  @Post('publish')
+  async publish(
+    @Body('topic') topic: string,
+    @Body('message') message: string,
+  ): Promise<void> {
+    await this.kafkaProducerService.send(topic, message);
   }
 }
