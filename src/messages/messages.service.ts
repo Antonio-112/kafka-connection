@@ -1,8 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class KafkaProducerService {
+  private readonly _logger = new Logger(KafkaProducerService.name);
   constructor(@Inject('KAFKA_PRODUCER') private clientKafka: ClientKafka) {}
 
   // Envía un mensaje al broker de Kafka
@@ -15,7 +16,7 @@ export class KafkaProducerService {
         },
         topic,
       );
-      console.log('Message sent to Kafka:', message);
+      this._logger.debug('Message sent to Kafka: ' + message);
     } catch (error) {
       throw new Error(`Failed to send message to Kafka: ${error.message}`);
     }
@@ -25,7 +26,7 @@ export class KafkaProducerService {
   async onApplicationShutdown() {
     try {
       await this.clientKafka.close();
-      console.log('Disconnected from Kafka');
+      this._logger.log('Disconnected from Kafka');
     } catch (error) {
       throw new Error(`Failed to disconnect from Kafka: ${error.message}`);
     }
