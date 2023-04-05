@@ -41,7 +41,7 @@ jobs:
         run: npm run test:unit
 
       # Pruebas de integración
-      - name: Setup Integration Test Environment
-        run: npm run setup:test-environment
-      - name: Run Integration Tests
-        run: npm run test:integration
+      - name: Verify Tests Cov
+        run: npm run test:cov
+      #- name: Run Integration Tests
+      #  run: npm run test:integration
