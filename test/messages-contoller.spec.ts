@@ -33,7 +33,7 @@ describe('MessagesController', () => {
       const topic = 'test-topic';
       const message = 'test-message';
 
-      await messagesController.publish(topic, message);
+      await messagesController.publish({ topic, message });
 
       expect(kafkaProducerService.send).toHaveBeenCalledWith(topic, message);
     });
