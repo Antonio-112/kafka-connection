@@ -64,8 +64,8 @@ const kafkaConfig: KafkaOptions = {
         retries: parseInt(process.env.KAFKA_MAX_RETRIES, 10) || 10,
       },
     },
-    producer: {
-      idempotent: true,
+    consumer: {
+      groupId: '',
     },
   },
 };

@@ -8,7 +8,7 @@ import { KafkaProducerService } from './messages.service';
   imports: [
     ClientsModule.register([
       {
-        name: 'KAFKA_PRODUCER',
+        name: 'KAFKA_CLUSTER',
         transport: Transport.KAFKA,
         options: kafkaConfig.options,
       },

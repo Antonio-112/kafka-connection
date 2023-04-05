@@ -1,4 +1,5 @@
-import { Controller, Post, Body, Logger } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 import { KafkaProducerService } from './messages.service';
 
 @Controller()
@@ -6,11 +7,11 @@ export class MessagesController {
   private readonly _logger = new Logger(MessagesController.name);
   constructor(private readonly kafkaProducerService: KafkaProducerService) {}
 
-  @Post('publish')
+  @MessagePattern('kafka-test-topic')
   async publish(
-    @Body('topic') topic: string,
-    @Body('message') message: string,
+    @Payload() payload: { topic: string; message: string },
   ): Promise<void> {
+    const { message, topic } = payload;
     this._logger.debug('Message: ' + message + ' on topic: ' + topic);
     await this.kafkaProducerService.send(topic, message);
   }
