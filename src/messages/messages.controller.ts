@@ -12,6 +12,6 @@ export class MessagesController {
   @MessagePattern('kafka-test-topic')
   async publish(@Payload() data: any): Promise<void> {
     this._logger.debug('Data: ' + data);
-    await this.kafkaService.send(data);
+    await this.kafkaService.process(data);
   }
 }
