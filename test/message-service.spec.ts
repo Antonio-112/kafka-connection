@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ClientKafka } from '@nestjs/microservices';
-import { KafkaProducerService } from '../src/messages/messages.service';
+import { KafkaService } from '../src/messages/messages.service';
 
 describe('KafkaProducerService', () => {
-  let service: KafkaProducerService;
+  let service: KafkaService;
   let clientKafka: ClientKafka;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        KafkaProducerService,
+        KafkaService,
         {
           provide: 'KAFKA_CLUSTER',
           useValue: {
@@ -21,7 +21,7 @@ describe('KafkaProducerService', () => {
       ],
     }).compile();
 
-    service = module.get<KafkaProducerService>(KafkaProducerService);
+    service = module.get<KafkaService>(KafkaService);
     clientKafka = module.get<ClientKafka>('KAFKA_CLUSTER');
   });
 

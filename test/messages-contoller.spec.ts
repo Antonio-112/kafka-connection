@@ -1,17 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MessagesController } from '../src/messages/messages.controller';
-import { KafkaProducerService } from '../src/messages/messages.service';
+import { KafkaService } from '../src/messages/messages.service';
 
 describe('MessagesController', () => {
   let messagesController: MessagesController;
-  let kafkaProducerService: KafkaProducerService;
+  let kafkaService: KafkaService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MessagesController],
       providers: [
         {
-          provide: KafkaProducerService,
+          provide: 'IKafkaService',
           useValue: {
             send: jest.fn(),
           },
@@ -20,8 +20,7 @@ describe('MessagesController', () => {
     }).compile();
 
     messagesController = module.get<MessagesController>(MessagesController);
-    kafkaProducerService =
-      module.get<KafkaProducerService>(KafkaProducerService);
+    kafkaService = module.get<KafkaService>('IKafkaService');
   });
 
   it('should be defined', () => {
@@ -29,13 +28,13 @@ describe('MessagesController', () => {
   });
 
   describe('publish', () => {
-    it('should call kafkaProducerService.send with the provided topic and message', async () => {
+    it('should call kafkaService.send with the provided topic and message', async () => {
       const topic = 'test-topic';
       const message = 'test-message';
 
       await messagesController.publish({ topic, message });
 
-      expect(kafkaProducerService.send).toHaveBeenCalledWith(topic, message);
+      expect(kafkaService.send).toHaveBeenCalledWith(topic, message);
     });
   });
 });
