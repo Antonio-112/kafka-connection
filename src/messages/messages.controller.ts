@@ -10,11 +10,8 @@ export class MessagesController {
   ) {}
 
   @MessagePattern('kafka-test-topic')
-  async publish(
-    @Payload() payload: { topic: string; message: string },
-  ): Promise<void> {
-    const { message, topic } = payload;
-    this._logger.debug('Message: ' + message + ' on topic: ' + topic);
-    await this.kafkaService.send(topic, message);
+  async publish(@Payload() data: any): Promise<void> {
+    this._logger.debug('Data: ' + data);
+    await this.kafkaService.send(data);
   }
 }

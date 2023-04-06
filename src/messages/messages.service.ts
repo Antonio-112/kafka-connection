@@ -9,7 +9,7 @@ export class KafkaService {
   // Envía un mensaje al broker de Kafka
   // TODO: envio de mensaje a un rabbit
   // TODO: Guardar en base de datos
-  async send(topic: string, message: any): Promise<void> {
+  async send(_data: any): Promise<void> {
     try {
       /*       await this.clientKafka.send(
         {
@@ -18,7 +18,7 @@ export class KafkaService {
         },
         topic,
       ); */
-      this._logger.debug('Message message: ' + message + ' in topic: ' + topic);
+      this._logger.debug('Message to be procesed...');
     } catch (error) {
       throw new Error(`Failed to send message to Kafka: ${error.message}`);
     }

@@ -34,7 +34,7 @@ describe('MessagesController', () => {
 
       await messagesController.publish({ topic, message });
 
-      expect(kafkaService.send).toHaveBeenCalledWith(topic, message);
+      expect(kafkaService.send).toHaveBeenCalledWith({ topic, message });
     });
   });
 });
