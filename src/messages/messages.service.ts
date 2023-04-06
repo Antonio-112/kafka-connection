@@ -2,8 +2,8 @@ import { Inject, Injectable, Logger } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
-export class KafkaProducerService {
-  private readonly _logger = new Logger(KafkaProducerService.name);
+export class KafkaService {
+  private readonly _logger = new Logger(KafkaService.name);
   constructor(@Inject('KAFKA_CLUSTER') private clientKafka: ClientKafka) {}
 
   // Envía un mensaje al broker de Kafka

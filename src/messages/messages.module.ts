@@ -1,9 +1,15 @@
-import { Module } from '@nestjs/common';
+import { Module, Provider } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import kafkaConfig from 'config/kafka.config';
 import { MessagesController } from './messages.controller';
-import { KafkaProducerService } from './messages.service';
+import { KafkaService } from './messages.service';
 
+const provider: Provider[] = [
+  {
+    provide: 'IKafkaService',
+    useClass: KafkaService,
+  },
+];
 @Module({
   imports: [
     ClientsModule.register([
@@ -15,6 +21,6 @@ import { KafkaProducerService } from './messages.service';
     ]),
   ],
   controllers: [MessagesController],
-  providers: [KafkaProducerService],
+  providers: provider,
 })
 export class MessageModule {}
