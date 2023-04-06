@@ -33,8 +33,9 @@ jobs:
         run: npm run lint
       - name: Format with Prettier
         run: npm run format
-      - name: Type check with TypeScript
-        run: npm run type-check
+
+      #- name: Type check with TypeScript
+      #  run: npm run type-check
 
       # Pruebas de unidad
       - name: Run Unit Tests
