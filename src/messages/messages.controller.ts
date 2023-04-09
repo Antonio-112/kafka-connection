@@ -1,5 +1,10 @@
 import { Controller, Inject, Logger } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+  Ctx,
+  KafkaContext,
+  MessagePattern,
+  Payload,
+} from '@nestjs/microservices';
 import { KafkaService } from './messages.service';
 
 @Controller()
@@ -10,8 +15,18 @@ export class MessagesController {
   ) {}
 
   @MessagePattern('kafka-test-topic')
-  async publish(@Payload() data: any): Promise<void> {
-    this._logger.debug('Data: ' + data);
-    await this.kafkaService.send(data);
+  async publish(
+    @Payload() data: any,
+    @Ctx() context: KafkaContext,
+  ): Promise<void> {
+    this._logger.debug(
+      'Data: ' +
+        data +
+        ' Topic: ' +
+        context.getTopic() +
+        ' Partition: ' +
+        context.getPartition(),
+    );
+    await this.kafkaService.process(data);
   }
 }

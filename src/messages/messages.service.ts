@@ -6,21 +6,11 @@ export class KafkaService {
   private readonly _logger = new Logger(KafkaService.name);
   constructor(@Inject('KAFKA_CLUSTER') private clientKafka: ClientKafka) {}
 
-  // Envía un mensaje al broker de Kafka
-  // TODO: envio de mensaje a un rabbit
-  // TODO: Guardar en base de datos
-  async send(_data: any): Promise<void> {
+  async process(data: any): Promise<void> {
     try {
-      /*       await this.clientKafka.send(
-        {
-          topic: topic,
-          messages: [{ value: JSON.stringify(message) }],
-        },
-        topic,
-      ); */
-      this._logger.debug('Message to be procesed...');
+      this._logger.debug('Message to be procesed... data: ' + data);
     } catch (error) {
-      throw new Error(`Failed to send message to Kafka: ${error.message}`);
+      throw new Error(`Failed to process message to Kafka: ${error.message}`);
     }
   }
 
