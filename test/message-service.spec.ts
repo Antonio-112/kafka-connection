@@ -2,10 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ClientKafka } from '@nestjs/microservices';
 import { KafkaService } from '../src/messages/messages.service';
 
+// Grupo de pruebas para el servicio KafkaService
 describe('KafkaProducerService', () => {
   let service: KafkaService;
   let clientKafka: ClientKafka;
 
+  // Configurar el entorno de pruebas antes de cada prueba
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -25,46 +27,24 @@ describe('KafkaProducerService', () => {
     clientKafka = module.get<ClientKafka>('KAFKA_CLUSTER');
   });
 
+  // Restablecer todos los mocks después de cada prueba
   afterEach(() => {
     jest.resetAllMocks();
   });
 
+  // Prueba para verificar que el servicio esté definido
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
-  /* it('should send a message to Kafka', async () => {
-    const topic = 'test-topic';
-    const message = { foo: 'bar' };
-
-    await service.send(topic, message);
-
-    expect(clientKafka.send).toHaveBeenCalledWith(
-      { topic: topic, messages: [{ value: JSON.stringify(message) }] },
-      topic,
-    );
-  }); */
-
-  /*   it('should handle errors when sending a message to Kafka', async () => {
-    const topic = 'test-topic';
-    const message = { foo: 'bar' };
-    const error = new Error(
-      'Failed to send message to Kafka: Failed to send message',
-    );
-
-    (clientKafka.send as jest.Mock).mockRejectedValue(error);
-
-    await expect(service.send(topic, message)).rejects.toThrow(
-      /Failed to send message to Kafka/,
-    );
-  });
- */
+  // Prueba para verificar que se desconecta correctamente de Kafka al cerrar la aplicación
   it('should disconnect from Kafka on application shutdown', async () => {
     await service.onApplicationShutdown();
 
     expect(clientKafka.close).toHaveBeenCalled();
   });
 
+  // Prueba para verificar el manejo de errores al desconectar de Kafka al cerrar la aplicación
   it('should handle errors when disconnecting from Kafka on application shutdown', async () => {
     const error = new Error(
       'Failed to disconnect from Kafka: Failed to disconnect from Kafka',
