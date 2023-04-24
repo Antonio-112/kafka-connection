@@ -1,12 +1,12 @@
-/* import { KafkaContext } from '@nestjs/microservices';
- */ import { Test, TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { MessagesController } from '../src/messages/messages.controller';
-/* import { KafkaService } from '../src/messages/messages.service';
- */
+import { KafkaService } from '../src/messages/messages.service';
+import { KafkaContext } from '@nestjs/microservices';
+
 describe('MessagesController', () => {
   let messagesController: MessagesController;
-  /*   let kafkaService: KafkaService;
-   */
+  let kafkaService: KafkaService;
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [MessagesController],
@@ -14,36 +14,34 @@ describe('MessagesController', () => {
         {
           provide: 'IKafkaService',
           useValue: {
-            send: jest.fn(),
+            process: jest.fn(),
           },
         },
       ],
     }).compile();
 
     messagesController = module.get<MessagesController>(MessagesController);
-    /*     kafkaService = module.get<KafkaService>('IKafkaService'); */
+    kafkaService = module.get<KafkaService>('IKafkaService');
   });
 
   it('should be defined', () => {
     expect(messagesController).toBeDefined();
   });
 
-  // TODO: Fix this test
-  /* describe('publish', () => {
-    it('should call kafkaService.send with the provided topic and message', async () => {
-      const topic = 'test-topic';
-      const message = 'test-message';
+  describe('publish', () => {
+    it('should call kafkaService.process with the provided data', async () => {
+      const data = { foo: 'bar' };
 
-      await messagesController.publish({ topic, message }, {
+      await messagesController.publish(data, {
         getTopic() {
-          return '';
+          return 'test-topic';
         },
         getPartition() {
-          return '';
+          return 0;
         },
       } as unknown as KafkaContext);
 
-      expect(kafkaService.process).toHaveBeenCalledWith({ topic, message });
+      expect(kafkaService.process).toHaveBeenCalledWith(data);
     });
-  }); */
+  });
 });
