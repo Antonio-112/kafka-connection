@@ -63,6 +63,12 @@
       "json",
       "ts"
     ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/dist/",
+      "/coverage/",
+      "/test/helpers/"
+    ],
     "rootDir": "./",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
@@ -74,5 +80,4 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   }
-  
 }

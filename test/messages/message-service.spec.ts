@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ClientKafka } from '@nestjs/microservices';
-import { KafkaService } from '../src/messages/messages.service';
+import { KafkaService } from '../../src/messages/messages.service';
 
 // Grupo de pruebas para el servicio KafkaService
 describe('KafkaProducerService', () => {
@@ -35,6 +35,26 @@ describe('KafkaProducerService', () => {
   // Prueba para verificar que el servicio esté definido
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  // Prueba para verificar que se procesan los datos correctamente
+  it('should process the data successfully', async () => {
+    const data = { foo: 'bar' };
+    await service.process(data);
+    // Asegurar que no se produzcan errores en el proceso
+  });
+
+  // Prueba para verificar que se manejan los errores correctamente en el método process()
+  it('should handle errors when processing data', async () => {
+    const errorMessage = 'Error processing data';
+    const data = { foo: 'bar' };
+
+    // Simular un error en el método process()
+    jest.spyOn(service['_logger'], 'debug').mockImplementation(() => {
+      throw new Error(errorMessage);
+    });
+
+    await expect(service.process(data)).rejects.toThrow(errorMessage);
   });
 
   // Prueba para verificar que se desconecta correctamente de Kafka al cerrar la aplicación
