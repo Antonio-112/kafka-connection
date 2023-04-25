@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MessagesController } from '../src/messages/messages.controller';
-import { KafkaService } from '../src/messages/messages.service';
+import { MessagesController } from '../../src/messages/messages.controller';
+import { KafkaService } from '../../src/messages/messages.service';
 import { KafkaContext } from '@nestjs/microservices';
 
 describe('MessagesController', () => {
